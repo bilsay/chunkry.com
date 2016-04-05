@@ -1,0 +1,87 @@
+<div id="search-box">
+	<div class="container">
+		<h1>Search restaurants by postcode: </h1>
+
+		<div>
+			{{#form "/search" class="form" method="get"}} 
+				<div class="input-group">
+					{{input "postCode" "" class="form-control"}}
+					<span class="input-group-btn">
+						{{submit "search" "Search" class="btn btn-default"}}
+					</span>
+				</div><!-- /input-group -->
+			{{/form}}
+		</div>
+	</div>
+</div>
+
+<div id="search-results" class="container">
+
+	{{#if shortResultText}}
+		<h2>
+			Results for {{shortResultText}}
+		</h2>
+	{{/if}}
+
+	{{#if restaurants}}
+		<ol class="restaurants">
+		{{#restaurants}}
+			<li class="row restaurant 
+						{{#if isOpenNow}}is-open-now{{else}}is-not-open-now{{/if}}">
+
+				{{#logo}}
+					<div class="col-lg-1 col-xs-3">
+						<img src="{{standardResolutionUrl}}" class="img-responsive" alt="{{name}}">
+					</div>
+				{{/logo}}
+
+				<div class="col-lg-11  col-xs-9">
+					<a href="{{url}}" target="_blank" class="name">
+						{{name}}
+						{{#unless isOpenNow}}
+							<span class="text-danger">(Closed)</span>
+						{{/unless}}
+					</a>
+
+					<div class="address">{{address}} {{city}}, {{postcode}}</div>
+					
+					<div>
+						<input type="number" 
+							   class="rating krajee-fa" 
+							   data-min=1 
+							   data-max=6 
+							   data-stars=6
+							   value={{ratingStars}} 
+							   data-size="xs" 
+							   data-show-caption="false"
+							   data-show-clear="false"
+							   data-readonly="true"
+							   data-rtl="false">
+
+						<span class="rating-text">
+							{{ratingStars}} ({{numberOfRatings}})
+						</span>
+					</div>
+					<ul class="cousine-types">
+						{{#cuisineTypes}}
+							<li class="cousine-type bg-info">{{name}}</li>
+						{{/cuisineTypes}}
+
+						{{#isHalal}}
+							<li class="cousine-type bg-info">Halal</li>
+						{{/isHalal}}
+					</ul>
+				</div>
+			</li>
+		{{/restaurants}}
+		</ol>
+	{{/if}}
+
+	{{#if errorMessage}}
+		<div id="search-empty-results" class="text-info">
+			{{errorMessage}}
+		</div>
+	{{/if}}
+</div>
+
+
